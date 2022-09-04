@@ -10,20 +10,23 @@ msci <- read.csv('msci-ipd-new-york-offices.csv', as.is=TRUE)
 msci$capital.gains.real <- msci$capital.gains.real/msci$capital.gains.real[1]*100
 msci$total.returns.real <- msci$total.returns.real/msci$total.returns.real[1]*100
 
+ncreif <- read.csv("../../../data-figures-private/longterm-returns/us/NCREIF NY Offices.csv", as.is=TRUE)
+ncreif$price.index.real <- ncreif$price.index.real/ncreif$price.index.real[ncreif$year == 1999]*100
+
+
 plot.real <- function(){
   plot( range(c(data$year, msci$year)), 
-      range(c(data$index, msci$capital.gains.real), na.rm=TRUE),
+      range(c(data$index, msci$capital.gains.real, ncreif$price.index.real), na.rm=TRUE),
       type='n',
       xlab='Year',
-      ylab='Index (1999=100)', 
+      ylab='Index (1999=100, in logs)', 
       log='y')
   abline(h=100, lwd=1, lty=3, col='grey')
   lines(data$year, data$index, lwd=3, lty=3, col=colours[3])
   lines(msci$year, msci$capital.gains.real, lwd=3, col=colours[3])
-  #lines(msci$year, msci$total.returns.real, lwd=3, col=colours[6])
+  lines(ncreif$year, ncreif$price.index.real, lwd=3, col=colours[6])
   points(data$year, data$index, lwd=3, col=colours[3], pch=19, cex=2)
-  legend('topleft','CRE Prices', lwd=3, col=colours[3], bty='n')
-  legend('bottomright','Data: 1899–1999 Wheaton et al. (2009), 1999–2020 MSCI/IPD', lwd=1, col='white', bty='n')
+  legend('topleft',c('1899–1999: CRE Prices Manhattan (Wheaton et al. (2009))',"1999–2020: Offices New York City (MSCI/IPD)","1981–2022: Offices NY-NJ-White Plains (NCREIF)"), lwd=3, col=colours[c(3,3,6)], lty=c(3,1,1), bty='n')
 }
 
 svg(file='cre-manhattan.svg', height=4, width=8)
