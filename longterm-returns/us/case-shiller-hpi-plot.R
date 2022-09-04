@@ -12,7 +12,7 @@ plot.real <- function(){
       type='n',
       xlab='Year',
       ylab='Index (1890=100)', 
-      log='')
+      log='y')
   abline(h=100, lwd=1, lty=3, col='grey')
   lines(data$year, data$hpi.real, lwd=3, col=colours[3])
   legend('topleft','House Prices', lwd=3, col=colours[3], bty='n')
